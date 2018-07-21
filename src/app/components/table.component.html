@@ -1,0 +1,30 @@
+<table class="my-table" *ngIf="(state$ | async).config">
+  <thead class="my-table headers">
+    <tr>
+      <th *ngFor="let column of (state$ | async).config">{{column.header}}</th>
+    </tr>
+  </thead>
+  <tbody class="my-table body">
+    <tr
+    my-active
+    draggable="true"
+    *ngFor="let row of (state$  | async).data; index as rowIndex"
+    (dragstart)="onDragStart(rowIndex)"
+    (dragover)="onDragOver($event)"
+    (drop)="onDrop(rowIndex)"
+    >
+      <td (click)="onSelect(rowIndex)" *ngFor="let column of (state$ | async).config; index as i" [ngClass]="{last: i === ((state$ | async).config.length - 1) }">{{row[column.value]}}</td>
+    </tr>
+  </tbody>
+</table>
+<div class="pag-space">
+  <button type="button" class="pag-button" (click)="changePage(0)"> << </button>
+  <button type="button" class="pag-button" (click)="changePage(state$.value.pageActual - 1)"> < </button>
+  <select class="size-page" (change)="changeSize($event)">
+    <option selected value="5">5</option>
+    <option value="10">10</option>
+    <option value="15">15</option>
+  </select>
+  <button type="button" class="pag-button" (click)="changePage(state$.value.pageActual + 1)"> > </button>
+  <button type="button" class="pag-button" (click)="changePage(state$.value.lastPage)"> >> </button>
+</div>

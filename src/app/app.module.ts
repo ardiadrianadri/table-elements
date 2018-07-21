@@ -1,24 +1,34 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Injector } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { createCustomElement } from '@angular/elements';
 
-import { AppComponent } from './app.component';
+import { MyActiveDirective, MyTableComponent } from './components';
+import { DEFAULT_TABLE, default_value } from './entities';
+import { TableReducerService } from './reducers';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    MyActiveDirective,
+    MyTableComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FormsModule
   ],
-  providers: [],
-  entryComponents: [AppComponent]
+  providers: [
+    TableReducerService,
+    { provide: DEFAULT_TABLE, useValue: default_value}
+  ],
+    // bootstrap: [MyTableComponent]
+  entryComponents: [MyTableComponent]
 })
 export class AppModule {
 
   constructor(private injector: Injector) {
-    const appElements = createCustomElement(AppComponent, {injector});
-    customElements.define('my-app-root', appElements);
+    const appElements = createCustomElement(MyTableComponent, {injector});
+    customElements.define('my-table', appElements);
   }
 
   ngDoBootstrap() { }
